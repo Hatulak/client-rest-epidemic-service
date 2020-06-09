@@ -10,12 +10,13 @@ import {
   LOGOUT_SUCCESS,
 } from "./auth_types";
 import jwt from "jwt-decode";
+import store from "../store"
 
 axios.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.request.status === 401) {
-      //   store.dispatch(logout()); dorobić logout żeby w przypadku 401 wylogowało automatycznie
+        store.dispatch(logout()); // logout żeby w przypadku 401 wylogowało automatycznie
     }
     return Promise.reject(error);
   }
@@ -28,7 +29,7 @@ export const loadUser = () => (dispatch, getState) => {
   // User Loading
   dispatch({ type: USER_LOADING });
   axios
-    .get(``, tokenConfig(getState))
+    .get(`${baseURL}/auth/getUser`, tokenConfig(getState))
     .then((res) => {
       dispatch({
         type: USER_LOADED,
@@ -86,7 +87,7 @@ export const register = ({ username, password }) => (dispatch) => {
   const body = JSON.stringify({ username, password });
 
   axios
-    .post(`${baseURL}/auth/signup`, body, config)
+    .post(`${baseURL}/users/signup`, body, config)
     .then((res) => {
       dispatch({
         type: REGISTER_SUCCESS,
@@ -98,6 +99,11 @@ export const register = ({ username, password }) => (dispatch) => {
         type: REGISTER_FAIL,
       });
     });
+};
+
+export const checkAuthority = () => {
+  // console.log(localStorage.getItem('token'));
+  return localStorage.getItem("token") ? true : false;
 };
 
 // LOGOUT USER

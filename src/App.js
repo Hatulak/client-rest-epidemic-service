@@ -12,6 +12,8 @@ import { Provider as AlertProvider } from "react-alert";
 import AlertTemplate from "react-alert-template-basic";
 import Alerts from "./components/Alerts";
 import Signup from "./components/Signup";
+import PrivateRoute from "./components/utils/PrivateRoute";
+import News from "./components/News";
 
 const alertOptions = {
   timeout: 3000,
@@ -34,6 +36,7 @@ class App extends Component {
                 <div className="container">
                   <Switch>
                     <Route exact path="/" component={Home} />
+                    <PrivateRoute exact path="/news" component={News} />
                     <Route exact path="/signin" component={Login} />
                     <Route exact path="/signup" component={Signup} />
                   </Switch>

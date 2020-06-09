@@ -24,6 +24,7 @@ export class Header extends Component {
          };
 
          componentDidMount() {
+           this.props.loadUser();
          }
 
          render() {
