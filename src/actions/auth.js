@@ -61,9 +61,10 @@ export const login = (username, password) => (dispatch) => {
     .then((res) => {
       const token = res.data.token;
       const user = jwt(token);
+      const newState = { token, user }
       dispatch({
         type: LOGIN_SUCCESS,
-        payload: user,
+        payload: newState,
       });
       localStorage.setItem("token", res.data.token);
     })
