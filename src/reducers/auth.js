@@ -15,6 +15,7 @@ const initialState = {
   isAuthenticated: null,
   isLoading: false,
   user: null,
+  redirect: false,
 };
 
 
@@ -36,7 +37,7 @@ export default function (state = initialState, action) {
     case REGISTER_SUCCESS:
         return{
             ...state,
-            ///todo finish it 
+            redirect:true
         }
     case LOGIN_SUCCESS:
         console.log(action.payload)
