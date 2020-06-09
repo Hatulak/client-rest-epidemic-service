@@ -16,6 +16,7 @@ class CreateNews extends Component {
     description: "",
     categoryId: "",
     file: '',
+    inputRef : React.createRef(),
   };
 
   componentDidMount = () => {
@@ -31,7 +32,7 @@ class CreateNews extends Component {
   onChange = (e) => this.setState({ [e.target.name]: e.target.value });
 
   render() {
-    const { title, description, categoryId, file } = this.state;
+    const { title, description, categoryId, file, inputRef } = this.state;
     return (
       <div className="col-md-6 m-auto">
         <div className="card card-body mt-5">
@@ -41,7 +42,7 @@ class CreateNews extends Component {
               <label>News title</label>
               <input
                 type="text"
-                name='title'
+                name="title"
                 className="form-control"
                 onChange={this.onChange}
                 value={title}
@@ -53,13 +54,18 @@ class CreateNews extends Component {
                 className="form-control"
                 rows="3"
                 onChange={this.onChange}
-                name='description'
+                name="description"
                 value={description}
               ></textarea>
             </div>
             <div className="form-group">
               <label>Example select</label>
-              <select className="form-control" onChange={this.onChange} name='categoryId' value={categoryId}>
+              <select
+                className="form-control"
+                onChange={this.onChange}
+                name="categoryId"
+                value={categoryId}
+              >
                 {this.props.categories.map((cat) => (
                   <option key={cat._id} value={cat._id}>
                     {cat.name}
@@ -71,8 +77,9 @@ class CreateNews extends Component {
               type="file"
               className="form-control-file"
               aria-describedby="fileHelp"
-              onChange={this.onChange}
-              name='file'
+              onChange={() => this.setState({file:inputRef.current.files[0]})}
+              name="file"
+              ref={inputRef}
             ></input>
             <div className="form-group">
               <button type="submit" className="btn btn-primary">

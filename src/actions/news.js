@@ -1,6 +1,6 @@
 import axios from "axios";
 import { tokenConfig, logout } from "./auth";
-import { GET_NEWS, GET_NEWS_BY_ID } from "./news_types";
+import { GET_NEWS, GET_NEWS_BY_ID, CREATE_NEWS_ERROR } from "./news_types";
 import { AUTH_ERROR } from "./auth_types";
 import store from "../store";
 
@@ -52,18 +52,33 @@ export const getNewsById = (newsId) => (dispatch, getState) => {
 };
 
 export const createNews = (state) => (dispatch, getState) => {
+  console.log(state)
   const { title, description, categoryId, file } = state;
   const body = JSON.stringify({ title, description, categoryId });
   axios
     .post(`${baseURL}/news`, body, tokenConfig(getState))
     .then((res) => {
-      if (file.trim() != "") {
-        console.log(res.data._id);
-        var formData = new FormData();
+      console.log(state);
+      if (file!== "") {
+        const token = getState().auth.token;
+
+        // Headers
+        const config = {
+          headers: {},
+        };
+
+        // If token, add to headers config
+        if (token) {
+          config.headers["Authorization"] = `Bearer ${token}`;
+        }
+        console.log(file);
+        
+        const formData = new FormData();
         formData.append(`file`, file);
         formData.append(`newsId`, res.data._id);
+        console.log(formData);
         axios
-          .post(`${baseURL}/news/fileUpload`, formData, tokenConfig(getState)) //TODO - poprawnie uploadowac pliki
+          .post(`${baseURL}/news/fileUpload`, formData, config) //TODO - poprawnie uploadowac pliki
           .then((res) => {
             dispatch({
               type: GET_NEWS_BY_ID,
@@ -72,7 +87,7 @@ export const createNews = (state) => (dispatch, getState) => {
           .catch((err) => {
             console.log(err);
             dispatch({
-              type: AUTH_ERROR,
+              type: CREATE_NEWS_ERROR,
             });
           });
       }
@@ -84,8 +99,7 @@ export const createNews = (state) => (dispatch, getState) => {
     .catch((err) => {
       console.log(err);
       dispatch({
-        type: AUTH_ERROR,
+        type: CREATE_NEWS_ERROR,
       });
     });
-
 };

@@ -1,8 +1,12 @@
-import { GET_NEWS_BY_ID, GET_NEWS } from "../actions/news_types";
+import {
+  GET_NEWS_BY_ID,
+  CREATE_NEWS_ERROR,
+  GET_NEWS,
+} from "../actions/news_types";
 
 const initialState = {
   news: [],
-  newsById: {}
+  newsById: {},
 };
 
 export default function (state = initialState, action) {
@@ -16,6 +20,11 @@ export default function (state = initialState, action) {
       return {
         ...state,
         newsById: action.payload,
+      };
+    case CREATE_NEWS_ERROR:
+      return {
+        ...state,
+        // todo finish it 
       };
     default:
       return state;
