@@ -48,7 +48,7 @@ class CreateNewCategory extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  
+    categories: state.categories,
 });
 
 export default connect(mapStateToProps, { createCategory })(CreateNewCategory);
