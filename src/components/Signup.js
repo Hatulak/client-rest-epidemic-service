@@ -55,6 +55,9 @@ class Signup extends Component {
     if (this.props.redirect) {
       return <Redirect to="/signin" />;
     }
+    else if (this.props.redirect) {
+      return <Redirect to="/signin" />;
+    }
     const { username, password, password2 } = this.state;
     return (
       <div className="col-md-6 m-auto">

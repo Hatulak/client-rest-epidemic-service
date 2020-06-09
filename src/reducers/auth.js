@@ -38,7 +38,7 @@ export default function (state = initialState, action) {
     case REGISTER_SUCCESS:
         return{
             ...state,
-            redirect: true, 
+            redirect:true
         }
     case LOGIN_SUCCESS:
         console.log(action.payload)
