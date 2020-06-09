@@ -6,6 +6,7 @@ import {
   CATEGORY_CREATION_FAIL,
   GET_CATEGORIES,
   GET_CATEGORIES_FAIL,
+  CATEGORY_CREATED_REDIRECTED,
 } from "./category_types";
 
 const baseURL = "http://localhost:3000";
@@ -29,7 +30,6 @@ export const createCategory = (name) => (dispatch, getState) => {
         type: CATEGORY_CREATED,
         payload: res.data,
       });
-      console.log("category created");
     })
     .catch((err) => {
       console.log(err);
@@ -43,7 +43,6 @@ export const getCategories = () => (dispatch, getState) => {
   axios
     .get(`${baseURL}/categories`, tokenConfig(getState))
     .then((res) => {
-      console.log(res);
       dispatch({
         type: GET_CATEGORIES,
         payload: res.data,
@@ -55,4 +54,10 @@ export const getCategories = () => (dispatch, getState) => {
         type: GET_CATEGORIES_FAIL,
       });
     });
+};
+
+export const setRedirectToFalse = () =>  (dispatch) => {
+  dispatch({
+    type: CATEGORY_CREATED_REDIRECTED,
+  });
 };

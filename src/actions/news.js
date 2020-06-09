@@ -1,6 +1,6 @@
 import axios from "axios";
 import { tokenConfig, logout } from "./auth";
-import { GET_NEWS } from "./news_types";
+import { GET_NEWS, GET_NEWS_BY_ID } from "./news_types";
 import { AUTH_ERROR } from "./auth_types";
 import store from "../store";
 
@@ -13,7 +13,6 @@ axios.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-
 
 const baseURL = "http://localhost:3000";
 
@@ -35,12 +34,12 @@ export const getNews = () => (dispatch, getState) => {
     });
 };
 
-export const getNewsById = () => (dispatch, getState) => {
+export const getNewsById = (newsId) => (dispatch, getState) => {
   axios
-    .get(`${baseURL}/news`, tokenConfig(getState))
+    .get(`${baseURL}/news/${newsId}`, tokenConfig(getState))
     .then((res) => {
       dispatch({
-        type: GET_NEWS,
+        type: GET_NEWS_BY_ID,
         payload: res.data,
       });
     })
@@ -50,4 +49,43 @@ export const getNewsById = () => (dispatch, getState) => {
         type: AUTH_ERROR,
       });
     });
+};
+
+export const createNews = (state) => (dispatch, getState) => {
+  const { title, description, categoryId, file } = state;
+  const body = JSON.stringify({ title, description, categoryId });
+  axios
+    .post(`${baseURL}/news`, body, tokenConfig(getState))
+    .then((res) => {
+      if (file.trim() != "") {
+        console.log(res.data._id);
+        var formData = new FormData();
+        formData.append(`file`, file);
+        formData.append(`newsId`, res.data._id);
+        axios
+          .post(`${baseURL}/news/fileUpload`, formData, tokenConfig(getState)) //TODO - poprawnie uploadowac pliki
+          .then((res) => {
+            dispatch({
+              type: GET_NEWS_BY_ID,
+            });
+          })
+          .catch((err) => {
+            console.log(err);
+            dispatch({
+              type: AUTH_ERROR,
+            });
+          });
+      }
+      dispatch({
+        type: GET_NEWS_BY_ID,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      dispatch({
+        type: AUTH_ERROR,
+      });
+    });
+
 };

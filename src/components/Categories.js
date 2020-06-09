@@ -1,18 +1,22 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { getCategories } from "../actions/category";
+import { getCategories, setRedirectToFalse } from "../actions/category";
 import { Link } from "react-router-dom";
 import moment from "moment";
 
 class Categories extends Component {
-
   static propTypes = {
+    setRedirectToFalse: PropTypes.func.isRequired,
+    redirectAfterCreation: PropTypes.bool.isRequired,
     categories: PropTypes.array.isRequired,
     getCategories: PropTypes.func.isRequired,
   };
 
   componentDidMount() {
+    if (this.props.redirectAfterCreation) {
+      this.props.setRedirectToFalse();
+    }
     if (this.props.categories) {
       this.props.getCategories();
       console.log(this.props.categories);
@@ -39,7 +43,7 @@ class Categories extends Component {
                     className={"btn btn-primary"}
                   >
                     Edit
-                  </Link> 
+                  </Link>
                 </td>
               </tr>
             ))}
@@ -51,8 +55,10 @@ class Categories extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    categories: state.category.categories
+  categories: state.category.categories,
+  redirectAfterCreation: state.category.redirectAfterCreation,
 });
 export default connect(mapStateToProps, {
   getCategories,
+  setRedirectToFalse,
 })(Categories);

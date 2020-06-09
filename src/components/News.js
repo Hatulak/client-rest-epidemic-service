@@ -34,7 +34,7 @@ class News extends Component {
           </thead>
           <tbody>
             {this.props.news.map((news) => (
-              <tr key={news.id}>
+              <tr key={news._id}>
                 <td>{news.title}</td>
                 <td>{news.description}</td>
                 <td>{news.author}</td>
@@ -42,7 +42,7 @@ class News extends Component {
                 <td>{news.status}</td>
                 <td>
                   <Link
-                    to={`/showNews/${news.id}`}
+                    to={`/showNews/${news._id}`}
                     className={"btn btn-primary"}
                   >
                     Show
