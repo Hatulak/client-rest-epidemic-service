@@ -47,6 +47,7 @@ export default function (state = initialState, action) {
         ...action.payload,
         isAuthenticated: true,
         user: action.payload,
+        token: localStorage.getItem("token"),
       };
     case AUTH_ERROR:
     case LOGIN_FAIL:
