@@ -8,6 +8,7 @@ import {
   LOGOUT_SUCCESS,
   REGISTER_SUCCESS,
   REGISTER_FAIL,
+  AFTER_REGISTRATION,
 } from "../actions/auth_types";
 
 const initialState = {
@@ -15,6 +16,7 @@ const initialState = {
   isAuthenticated: null,
   isLoading: false,
   user: null,
+  redirect: false,
 };
 
 
@@ -36,7 +38,7 @@ export default function (state = initialState, action) {
     case REGISTER_SUCCESS:
         return{
             ...state,
-            ///todo finish it 
+            redirect: true, 
         }
     case LOGIN_SUCCESS:
         console.log(action.payload)
@@ -57,7 +59,13 @@ export default function (state = initialState, action) {
         isLoading: false,
         user: null,
       };
+    case AFTER_REGISTRATION:
+      return{
+        ...state,
+        redirect: false,
+      };
     default:
       return state;
+    
   }
 }

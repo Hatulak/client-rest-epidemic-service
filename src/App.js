@@ -14,6 +14,7 @@ import Alerts from "./components/Alerts";
 import Signup from "./components/Signup";
 import PrivateRoute from "./components/utils/PrivateRoute";
 import News from "./components/News";
+import CreateNewCategory from "./components/CreateNewCategory";
 
 const alertOptions = {
   timeout: 3000,
@@ -37,6 +38,7 @@ class App extends Component {
                   <Switch>
                     <Route exact path="/" component={Home} />
                     <PrivateRoute exact path="/news" component={News} />
+                    <PrivateRoute exact path="/createCategory" component={CreateNewCategory} />
                     <Route exact path="/signin" component={Login} />
                     <Route exact path="/signup" component={Signup} />
                   </Switch>

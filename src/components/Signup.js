@@ -14,6 +14,7 @@ class Signup extends Component {
   static propTypes = {
     register: PropTypes.func.isRequired,
     isAuthenticated: PropTypes.bool,
+    redirect: PropTypes.bool,
   };
   onSubmit = (e) => {
     e.preventDefault();
@@ -50,6 +51,9 @@ class Signup extends Component {
   render() {
     if (this.props.isAuthenticated) {
       return <Redirect to="/" />;
+    } 
+    if (this.props.redirect) {
+      return <Redirect to="/signin" />;
     }
     const { username, password, password2 } = this.state;
     return (
@@ -105,6 +109,7 @@ class Signup extends Component {
 
 const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated,
+  redirect: state.auth.redirect,
 });
 
 export default connect(mapStateToProps, { register, returnErrors })(Signup);

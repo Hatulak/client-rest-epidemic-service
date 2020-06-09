@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { login } from "../actions/auth";
+import { login, setRedirectToFalse } from "../actions/auth";
 
 class Login extends Component {
   state = {
@@ -10,9 +10,18 @@ class Login extends Component {
     password: "",
   };
   static propTypes = {
+    setRedirectToFalse: PropTypes.func.isRequired,
     login: PropTypes.func.isRequired,
     isAuthenticated: PropTypes.bool,
+    redirect: PropTypes.bool,
   };
+
+  componentDidMount = () => {
+    if (this.props.redirect) {
+      this.props.setRedirectToFalse();
+    }
+  };
+
   onSubmit = (e) => {
     e.preventDefault();
     this.props.login(this.state.username, this.state.password);
@@ -68,4 +77,4 @@ const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated,
 });
 
-export default connect(mapStateToProps, { login })(Login);
+export default connect(mapStateToProps, { login, setRedirectToFalse })(Login);

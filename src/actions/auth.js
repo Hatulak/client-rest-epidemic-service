@@ -8,21 +8,22 @@ import {
   REGISTER_SUCCESS,
   REGISTER_FAIL,
   LOGOUT_SUCCESS,
+  AFTER_REGISTRATION,
 } from "./auth_types";
 import jwt from "jwt-decode";
-import store from "../store"
+import store from "../store";
 
 axios.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.request.status === 401) {
-        store.dispatch(logout()); // logout żeby w przypadku 401 wylogowało automatycznie
+      store.dispatch(logout()); // logout żeby w przypadku 401 wylogowało automatycznie
     }
     return Promise.reject(error);
   }
 );
 
-const baseURL = 'http://localhost:3000';
+const baseURL = "http://localhost:3000";
 
 // CHECK TOKEN & LOAD USER
 export const loadUser = () => (dispatch, getState) => {
@@ -49,7 +50,7 @@ export const login = (username, password) => (dispatch) => {
   // Headers
   const config = {
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
   };
   // Request Body
@@ -104,6 +105,13 @@ export const register = ({ username, password }) => (dispatch) => {
 export const checkAuthority = () => {
   // console.log(localStorage.getItem('token'));
   return localStorage.getItem("token") ? true : false;
+};
+
+export const setRedirectToFalse = () =>  (dispatch) => {
+  console.log("asdads")
+  dispatch({
+    type: AFTER_REGISTRATION,
+  });
 };
 
 // LOGOUT USER
