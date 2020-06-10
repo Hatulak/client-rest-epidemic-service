@@ -4,12 +4,18 @@ import {
   GET_CATEGORIES,
   GET_CATEGORIES_FAIL,
   CATEGORY_CREATED_REDIRECTED,
+  CATEGORY_EDITED,
+  CATEGORY_EDITED_FAIL,
+  CATEGORY_EDITED_REDIRECTED,
+  GET_CATEGORY,
+  GET_CATEGORY_FAIL,
 } from "../actions/category_types";
 
 const initialState = {
   categories: [],
   category: {},
   redirectAfterCreation: false,
+  redirectAfterEdition: false,
 };
 
 export default function (state = initialState, action) {
@@ -39,6 +45,32 @@ export default function (state = initialState, action) {
       return {
         ...state,
         categories: [],
+      };
+    case GET_CATEGORY:
+      return {
+        ...state,
+        category: action.payload,
+      };
+    case GET_CATEGORY_FAIL:
+      return {
+        ...state,
+        category: {},
+      };
+    case CATEGORY_EDITED:
+      return {
+        ...state,
+        category: {},
+        redirectAfterEdition: true,
+      };
+    case CATEGORY_EDITED_REDIRECTED:
+      return {
+        ...state,
+        redirectAfterEdition: false,
+      };
+    case CATEGORY_EDITED_FAIL:
+      return {
+        ...state,
+        category: {},
       };
     default:
       return state;

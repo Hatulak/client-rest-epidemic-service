@@ -1,14 +1,16 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { getCategories, setRedirectToFalse } from "../actions/category";
+import { getCategories, setRedirectToFalse, setRedirectAterEditionToFalse } from "../actions/category";
 import { Link } from "react-router-dom";
 import moment from "moment";
 
 class Categories extends Component {
   static propTypes = {
     setRedirectToFalse: PropTypes.func.isRequired,
+    setRedirectAterEditionToFalse: PropTypes.func.isRequired,
     redirectAfterCreation: PropTypes.bool.isRequired,
+    redirectAfterEdition: PropTypes.bool.isRequired,
     categories: PropTypes.array.isRequired,
     getCategories: PropTypes.func.isRequired,
   };
@@ -16,6 +18,9 @@ class Categories extends Component {
   componentDidMount() {
     if (this.props.redirectAfterCreation) {
       this.props.setRedirectToFalse();
+    }
+    if (this.props.redirectAfterEdition) {
+      this.props.setRedirectAterEditionToFalse();
     }
     if (this.props.categories) {
       this.props.getCategories();
@@ -38,7 +43,7 @@ class Categories extends Component {
           </thead>
           <tbody>
             {this.props.categories.map((cat) => (
-              <tr key={cat.id}>
+              <tr key={cat._id}>
                 <td>{cat.name}</td>
                 <td>
                   <Link
@@ -60,8 +65,10 @@ class Categories extends Component {
 const mapStateToProps = (state) => ({
   categories: state.category.categories,
   redirectAfterCreation: state.category.redirectAfterCreation,
+  redirectAfterEdition: state.category.redirectAfterEdition,
 });
 export default connect(mapStateToProps, {
   getCategories,
   setRedirectToFalse,
+  setRedirectAterEditionToFalse,
 })(Categories);

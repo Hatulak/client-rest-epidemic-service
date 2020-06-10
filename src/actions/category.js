@@ -7,6 +7,11 @@ import {
   GET_CATEGORIES,
   GET_CATEGORIES_FAIL,
   CATEGORY_CREATED_REDIRECTED,
+  CATEGORY_EDITED,
+  CATEGORY_EDITED_FAIL,
+  CATEGORY_EDITED_REDIRECTED,
+  GET_CATEGORY,
+  GET_CATEGORY_FAIL,
 } from "./category_types";
 
 const baseURL = "http://localhost:3000";
@@ -39,6 +44,25 @@ export const createCategory = (name) => (dispatch, getState) => {
     });
 };
 
+export const editCategory = (state) => (dispatch, getState) => {
+  const { name, _id } = state;
+  const body = JSON.stringify({ name, id : _id });
+  axios
+    .put(`${baseURL}/categories`, body, tokenConfig(getState))
+    .then((res) => {
+      dispatch({
+        type: CATEGORY_EDITED,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      dispatch({
+        type: CATEGORY_EDITED_FAIL,
+      });
+    });
+};
+
 export const getCategories = () => (dispatch, getState) => {
   axios
     .get(`${baseURL}/categories`, tokenConfig(getState))
@@ -56,8 +80,32 @@ export const getCategories = () => (dispatch, getState) => {
     });
 };
 
+export const getCategoryById = (categoryId) => (dispatch, getState) => {
+  axios
+    .get(`${baseURL}/categories/${categoryId}`, tokenConfig(getState))
+    .then((res) => {
+      dispatch({
+        type: GET_CATEGORY,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      dispatch({
+        type: GET_CATEGORY_FAIL,
+      });
+    });
+};
+
+
+
 export const setRedirectToFalse = () =>  (dispatch) => {
   dispatch({
     type: CATEGORY_CREATED_REDIRECTED,
+  });
+};
+export const setRedirectAterEditionToFalse = () =>  (dispatch) => {
+  dispatch({
+    type: CATEGORY_EDITED_REDIRECTED,
   });
 };
