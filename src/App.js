@@ -20,6 +20,8 @@ import NewsDetails from "./components/NewsDetails";
 import CreateNews from "./components/CreateNews";
 import EditCategory from "./components/EditCategory";
 import EditNews from "./components/EditNews";
+import ShowUsers from "./components/ShowUsers";
+import UserRole from "./components/UserRole";
 
 const alertOptions = {
   timeout: 3000,
@@ -43,12 +45,36 @@ class App extends Component {
                   <Switch>
                     <Route exact path="/" component={Home} />
                     <PrivateRoute exact path="/news" component={News} />
-                    <PrivateRoute path={"/showNews/:id"} component={NewsDetails} />
+                    <PrivateRoute
+                      path={"/showNews/:id"}
+                      component={NewsDetails}
+                    />
                     <PrivateRoute path={"/editNews/:id"} component={EditNews} />
-                    <PrivateRoute exact path="/createCategory" component={CreateNewCategory} />
-                    <PrivateRoute path={"/editCategory/:id"} component={EditCategory} />
-                    <PrivateRoute exact path="/categories" component={Categories} />
-                    <PrivateRoute exact path="/createNews" component={CreateNews} />
+                    <PrivateRoute
+                      exact
+                      path="/createCategory"
+                      component={CreateNewCategory}
+                    />
+                    <PrivateRoute
+                      path={"/editCategory/:id"}
+                      component={EditCategory}
+                    />
+                    <PrivateRoute
+                      exact
+                      path="/categories"
+                      component={Categories}
+                    />
+                    <PrivateRoute
+                      exact
+                      path="/createNews"
+                      component={CreateNews}
+                    />
+                    <PrivateRoute exact path="/users" component={ShowUsers} />
+                    <PrivateRoute
+                      exact
+                      path="/setUserRole/:id"
+                      component={UserRole}
+                    />
                     <Route exact path="/signin" component={Login} />
                     <Route exact path="/signup" component={Signup} />
                   </Switch>

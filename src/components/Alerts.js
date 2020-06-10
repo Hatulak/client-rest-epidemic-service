@@ -17,8 +17,8 @@ class Alerts extends Component {
         alert.error(message.msg.passwordNotMatch);
       if (message.msg.categoryIdIsEmpty)
         alert.error(message.msg.categoryIdIsEmpty);
-      if (message.msg.requestFailed)
-        alert.error(message.msg.requestFailed);
+      if (message.msg.requestFailed) alert.error(message.msg.requestFailed);
+      if (message.msg.setRoleError) alert.error(message.msg.setRoleError);
     }
   }
   render() {
