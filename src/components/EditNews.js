@@ -2,51 +2,62 @@ import React, { Component } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { createNews, setRedirectAfterCreationToFalse } from "../actions/news";
+import { createNews, setRedirectAfterCreationToFalse, getNewsById, editNews } from "../actions/news";
 import { getCategories } from "../actions/category";
-import { returnErrors } from "../actions/message";
 
 class CreateNews extends Component {
   static propTypes = {
     getCategories: PropTypes.func.isRequired,
-    setRedirectAfterCreationToFalse: PropTypes.func.isRequired,
-    redirectAfterCreation: PropTypes.bool.isRequired,
-    createNews: PropTypes.func.isRequired,
+    getNewsById: PropTypes.func.isRequired,
+    editNews: PropTypes.func.isRequired,
     categories: PropTypes.array.isRequired,
+    newsById: PropTypes.object.isRequired,
   };
   state = {
+    id: '',
     title: "",
     description: "",
-    categoryId: "",
+    cconst: "",
     file: "",
-    inputRef: React.createRef(),
+    inputRef : React.createRef(),
   };
 
   componentDidMount = () => {
     if (this.props.categories) {
       this.props.getCategories();
     }
+    if (
+      this.props.newsById ||
+      this.props.getNewsById._id !== this.props.match.params.id
+    ) {
+      this.props.getNewsById(this.props.match.params.id);
+    }
+    this.setState({...this.props.newsById, file: ""});
+  };
+
+  componentDidUpdate = () => {
+    if (this.props.newsById._id !== this.state.id)
+      this.setState({
+        title: this.props.newsById.title,
+        id: this.props.newsById._id,
+        description: this.props.newsById.description,
+        cconst: this.props.newsById.cconst,
+        // file: this.props.newsById.file,
+      });
   };
 
   onSubmit = (e) => {
     e.preventDefault();
-    if (this.state.categoryId !== "") {
-      this.props.createNews(this.state);
-    } else{
-      this.props.returnErrors({ categoryIdIsEmpty: "Category Id was not chosen" });
-    }
+    this.props.editNews(this.state);
   };
   onChange = (e) => this.setState({ [e.target.name]: e.target.value });
 
   render() {
-    if (this.props.redirectAfterCreation) {
-      return <Redirect to="/news" />;
-    }
-    const { title, description, categoryId, file, inputRef } = this.state;
+    const { title, description, cconst, file, inputRef } = this.state;
     return (
       <div className="col-md-6 m-auto">
         <div className="card card-body mt-5">
-          <h2 className="text-center">Create news</h2>
+          <h2 className="text-center">Edit news</h2>
           <form onSubmit={this.onSubmit}>
             <div className="form-group">
               <label>News title</label>
@@ -73,12 +84,12 @@ class CreateNews extends Component {
               <select
                 className="form-control"
                 onChange={this.onChange}
-                name="categoryId"
-                value={categoryId}
+                name="cconst"
+                value={cconst}
+                // defaultValue={cconst}
               >
-                <option value="select">Select an Option</option>
                 {this.props.categories.map((cat) => (
-                  <option key={cat._id} value={cat._id}>
+                  <option key={cat.cconst} value={cat.cconst}>
                     {cat.name}
                   </option>
                 ))}
@@ -88,15 +99,13 @@ class CreateNews extends Component {
               type="file"
               className="form-control-file"
               aria-describedby="fileHelp"
-              onChange={() =>
-                this.setState({ file: inputRef.current.files[0] })
-              }
+              onChange={() => this.setState({file:inputRef.current.files[0]})}
               name="file"
               ref={inputRef}
             ></input>
             <div className="form-group">
               <button type="submit" className="btn btn-primary">
-                Create
+                Edit
               </button>
             </div>
           </form>
@@ -108,9 +117,9 @@ class CreateNews extends Component {
 
 const mapStateToProps = (state) => ({
   categories: state.category.categories,
-  redirectAfterCreation: state.news.redirectAfterCreation,
+  newsById: state.news.newsById,
 });
 
-export default connect(mapStateToProps, { createNews, getCategories, returnErrors, setRedirectAfterCreationToFalse })(
+export default connect(mapStateToProps, { createNews, getCategories, getNewsById, editNews })(
   CreateNews
 );

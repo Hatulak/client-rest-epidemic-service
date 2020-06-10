@@ -20,17 +20,24 @@ class NewsDetails extends Component {
     }
   }
 
+  renderImage() {
+    if(this.props.newsById.file){
+      return (<img src={`http://localhost:3000/news/download/${this.props.newsById.file}`} />);
+    }
+  }
+  
+
   render() {
     return (
-      <div class="jumbotron">
-        <h1 class="display-3">{this.props.newsById.title}</h1>
-        <p class="lead">
+      <div className="jumbotron">
+        <h1 className="display-3">{this.props.newsById.title}</h1>
+        <p className="lead">
           Autor: {this.props.newsById.author}, dnia{" "}
           {moment(this.props.newsById.date).format("DD-MM-yyyy")}
         </p>
-        <hr class="my-4" />
+        <hr className="my-4" />
         <p>{this.props.newsById.description}</p>
-        <img src={`http://localhost:3000/news/download/${this.props.newsById.file}`} />
+        {this.renderImage()}
       </div>
     );
   }

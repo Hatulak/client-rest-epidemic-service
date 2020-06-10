@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { getNews, getNewsById } from "../actions/news";
+import { getNews, getNewsById, deleteNewsById } from "../actions/news";
 import { Link } from "react-router-dom";
 import moment from "moment";
 
@@ -9,6 +9,7 @@ class News extends Component {
   static propTypes = {
     news: PropTypes.array.isRequired,
     getNews: PropTypes.func.isRequired,
+    deleteNewsById: PropTypes.func.isRequired,
     getNewsById: PropTypes.func.isRequired,
     user: PropTypes.object.isRequired,
     auth: PropTypes.object.isRequired,
@@ -35,6 +36,39 @@ class News extends Component {
           </div>
         );
       }
+  }
+
+  renderEditButton(id) {
+    if (this.props.user !== null) {
+      if (
+        this.props.user.role.includes("ADMIN") ||
+        this.props.user.role.includes("EDITOR")
+      ) {
+        return (
+          <Link to={`/editNews/${id}`} className={"btn btn-primary"}>
+            Edit
+          </Link>
+        );
+      }
+    }
+  }
+  renderDeleteButton(id) {
+    if (this.props.user !== null) {
+      if (
+        this.props.user.role.includes("ADMIN") ||
+        this.props.user.role.includes("EDITOR")
+      ) {
+        return (
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={this.props.deleteNewsById.bind(this, id)}
+          >
+            Delete
+          </button>
+        );
+      }
+    }
   }
 
   render() {
@@ -67,6 +101,8 @@ class News extends Component {
                   >
                     Show
                   </Link>
+                  {this.renderEditButton(news._id)}
+                  {this.renderDeleteButton(news._id)}
                 </td>
               </tr>
             ))}
@@ -85,4 +121,5 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
   getNews,
   getNewsById,
+  deleteNewsById,
 })(News);

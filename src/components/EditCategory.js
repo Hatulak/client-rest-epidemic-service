@@ -22,7 +22,6 @@ class EditCategory extends Component {
       this.props.category._id !== this.props.match.params.id
     ) {
       this.props.getCategoryById(this.props.match.params.id);
-      // this.setState(this.props.category);
     }
     this.setState(this.props.category);
   };

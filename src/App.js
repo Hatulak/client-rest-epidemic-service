@@ -19,6 +19,7 @@ import Categories from "./components/Categories";
 import NewsDetails from "./components/NewsDetails";
 import CreateNews from "./components/CreateNews";
 import EditCategory from "./components/EditCategory";
+import EditNews from "./components/EditNews";
 
 const alertOptions = {
   timeout: 3000,
@@ -43,6 +44,7 @@ class App extends Component {
                     <Route exact path="/" component={Home} />
                     <PrivateRoute exact path="/news" component={News} />
                     <PrivateRoute path={"/showNews/:id"} component={NewsDetails} />
+                    <PrivateRoute path={"/editNews/:id"} component={EditNews} />
                     <PrivateRoute exact path="/createCategory" component={CreateNewCategory} />
                     <PrivateRoute path={"/editCategory/:id"} component={EditCategory} />
                     <PrivateRoute exact path="/categories" component={Categories} />

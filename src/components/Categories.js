@@ -1,13 +1,14 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { getCategories, setRedirectToFalse, setRedirectAterEditionToFalse } from "../actions/category";
+import { getCategories, setRedirectToFalse, setRedirectAterEditionToFalse, deleteCategoryById } from "../actions/category";
 import { Link } from "react-router-dom";
 import moment from "moment";
 
 class Categories extends Component {
   static propTypes = {
     setRedirectToFalse: PropTypes.func.isRequired,
+    deleteCategoryById: PropTypes.func.isRequired,
     setRedirectAterEditionToFalse: PropTypes.func.isRequired,
     redirectAfterCreation: PropTypes.bool.isRequired,
     redirectAfterEdition: PropTypes.bool.isRequired,
@@ -25,6 +26,25 @@ class Categories extends Component {
     if (this.props.categories) {
       this.props.getCategories();
       console.log(this.props.categories);
+    }
+  }
+
+  renderDeleteButton(id) {
+    if (this.props.user !== null) {
+      if (
+        this.props.user.role.includes("ADMIN") ||
+        this.props.user.role.includes("EDITOR")
+      ) {
+        return (
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={this.props.deleteCategoryById.bind(this, id)}
+          >
+            Delete
+          </button>
+        );
+      }
     }
   }
 
@@ -52,6 +72,7 @@ class Categories extends Component {
                   >
                     Edit
                   </Link>
+                  {this.renderDeleteButton(cat._id)}
                 </td>
               </tr>
             ))}
@@ -66,9 +87,12 @@ const mapStateToProps = (state) => ({
   categories: state.category.categories,
   redirectAfterCreation: state.category.redirectAfterCreation,
   redirectAfterEdition: state.category.redirectAfterEdition,
+  user: state.auth.user,
+  auth: state.auth,
 });
 export default connect(mapStateToProps, {
   getCategories,
   setRedirectToFalse,
   setRedirectAterEditionToFalse,
+  deleteCategoryById
 })(Categories);

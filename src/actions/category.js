@@ -12,6 +12,8 @@ import {
   CATEGORY_EDITED_REDIRECTED,
   GET_CATEGORY,
   GET_CATEGORY_FAIL,
+  DELETE_CATEGORY,
+  DELETE_CATEGORY_ERROR,
 } from "./category_types";
 
 const baseURL = "http://localhost:3000";
@@ -96,7 +98,22 @@ export const getCategoryById = (categoryId) => (dispatch, getState) => {
       });
     });
 };
-
+export const deleteCategoryById = (categoryId) => (dispatch, getState) => {
+  axios
+    .delete(`${baseURL}/categories/${categoryId}`, tokenConfig(getState))
+    .then((res) => {
+      dispatch({
+        type: DELETE_CATEGORY,
+        payload: categoryId,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      dispatch({
+        type: DELETE_CATEGORY_ERROR,
+      });
+    });
+};
 
 
 export const setRedirectToFalse = () =>  (dispatch) => {

@@ -9,6 +9,8 @@ import {
   CATEGORY_EDITED_REDIRECTED,
   GET_CATEGORY,
   GET_CATEGORY_FAIL,
+  DELETE_CATEGORY,
+  DELETE_CATEGORY_ERROR,
 } from "../actions/category_types";
 
 const initialState = {
@@ -71,6 +73,15 @@ export default function (state = initialState, action) {
       return {
         ...state,
         category: {},
+      };
+      case DELETE_CATEGORY:
+      return {
+        ...state,
+        categories: state.categories.filter(_category => _category._id !== action.payload)
+      };
+      case DELETE_CATEGORY_ERROR:
+      return {
+        ...state,
       };
     default:
       return state;
