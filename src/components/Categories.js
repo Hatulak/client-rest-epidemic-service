@@ -27,6 +27,9 @@ class Categories extends Component {
     return (
       <div>
         <h1>Categories:</h1>
+        <Link to={"/createCategory"} className={"btn btn-primary"}>
+          Create Category
+        </Link>
         <table className="table table-striped" datapagesize={5}>
           <thead>
             <tr>

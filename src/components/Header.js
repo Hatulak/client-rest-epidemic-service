@@ -27,6 +27,27 @@ export class Header extends Component {
            this.props.loadUser();
          }
 
+         renderButtons() {
+           if (this.props.auth.user !== null)
+             if (
+               this.props.auth.user.role.includes("ADMIN") ||
+               this.props.auth.user.role.includes("EDITOR")
+             ) {
+               const headerButtons = (
+                 <div className={"collapse navbar-collapse"} id="navbarColor01">
+                   <ul className="nav navbar-nav mr-auto ">
+                     <li className="nav-item active">
+                       <Link to={"/categories"} className={"nav-link"}>
+                         Categories
+                       </Link>
+                     </li>
+                   </ul>
+                 </div>
+               );
+               return headerButtons;
+             }
+         }
+
          render() {
            const navigate = this.state.navigate;
            if (navigate) {
@@ -43,6 +64,7 @@ export class Header extends Component {
                    </Link>
                  </li>
                </ul>
+               {this.renderButtons()}
 
                <ul className="nav navbar-nav pull-right">
                  <span className="navbar-text ">
