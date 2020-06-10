@@ -9,6 +9,10 @@ import {
   EDIT_NEWS_ERROR,
   DELETE_NEWS,
   DELETE_NEWS_ERROR,
+  ADD_COMMENT,
+  ADD_COMMENT_ERROR,
+  GET_COMMENTS,
+  GET_COMMENTS_ERROR,
 } from "../actions/news_types";
 
 const initialState = {
@@ -16,6 +20,7 @@ const initialState = {
   newsById: {},
   redirectAfterCreation: false,
   redirectAfterEdition: false,
+  comments: [],
 };
 
 export default function (state = initialState, action) {
@@ -65,7 +70,7 @@ export default function (state = initialState, action) {
     case DELETE_NEWS:
       return {
         ...state,
-        news: state.news.filter(_news => _news._id !== action.payload)
+        news: state.news.filter((_news) => _news._id !== action.payload),
         // todo finish it
       };
     case DELETE_NEWS_ERROR:
@@ -73,6 +78,26 @@ export default function (state = initialState, action) {
         ...state,
         // todo finish it
       };
+    case ADD_COMMENT_ERROR:
+      return {
+        ...state,
+        // todo finish it
+      };
+    case ADD_COMMENT:
+      return {
+        ...state,
+        // todo finish it
+      };
+    case GET_COMMENTS:
+      return{
+        ...state,
+        comments: action.payload,
+      };
+      case GET_COMMENTS_ERROR:
+        return{
+          ...state,
+          comments: [],
+        };
     default:
       return state;
   }

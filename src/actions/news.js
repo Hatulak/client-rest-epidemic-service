@@ -10,6 +10,10 @@ import {
   DELETE_NEWS_ERROR,
   EDITED_NEWS,
   EDIT_NEWS_ERROR,
+  ADD_COMMENT,
+  ADD_COMMENT_ERROR,
+  GET_COMMENTS,
+  GET_COMMENTS_ERROR,
 } from "./news_types";
 import { AUTH_ERROR } from "./auth_types";
 import { GET_ERRORS } from "./message_types";
@@ -198,6 +202,42 @@ export const deleteNewsById = (newsId) => (dispatch, getState) => {
       });
     });
 };
+
+export const addComment = (state, newsId) => (dispatch, getState) => {
+  const body = JSON.stringify({ newsId: newsId, details: state.comment });
+  axios
+    .post(`${baseURL}/comments`, body, tokenConfig(getState))
+    .then((res) => {
+      dispatch({
+        type: ADD_COMMENT,
+        // payload: newsId,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      dispatch({
+        type: ADD_COMMENT_ERROR,
+      });
+    });
+};
+export const getCommentsByNewsId = ( newsId) => (dispatch, getState) => {
+  axios
+    .get(`${baseURL}/comments?newsId=${newsId}`, tokenConfig(getState))
+    .then((res) => {
+      dispatch({
+        type: GET_COMMENTS,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      dispatch({
+        type: GET_COMMENTS_ERROR,
+      });
+    });
+};
+
+
 
 export const setRedirectAfterCreationToFalse = () => (dispatch) => {
   dispatch({
