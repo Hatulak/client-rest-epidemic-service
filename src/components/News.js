@@ -10,6 +10,8 @@ class News extends Component {
     news: PropTypes.array.isRequired,
     getNews: PropTypes.func.isRequired,
     getNewsById: PropTypes.func.isRequired,
+    user: PropTypes.object.isRequired,
+    auth: PropTypes.object.isRequired,
   };
   componentDidMount() {
     if (this.props.news) {
@@ -18,10 +20,28 @@ class News extends Component {
     }
   }
 
+  renderButton() {
+    console.log(this.props.user);
+    if (this.props.user !== null)
+      if (
+        this.props.user.role.includes("ADMIN") ||
+        this.props.user.role.includes("EDITOR")
+      ) {
+        return (
+          <div>
+            <Link to={"/createNews"} className={"btn btn-primary"}>
+              Create news
+            </Link>
+          </div>
+        );
+      }
+  }
+
   render() {
     return (
       <div>
         <h1>News:</h1>
+        {this.renderButton()}
         <table className="table table-striped" datapagesize={5}>
           <thead>
             <tr>
@@ -58,7 +78,9 @@ class News extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  news: state.news.news
+  news: state.news.news,
+  user: state.auth.user,
+  auth: state.auth,
 });
 export default connect(mapStateToProps, {
   getNews,

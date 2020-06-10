@@ -11,7 +11,10 @@ class NewsDetails extends Component {
     getNewsById: PropTypes.func.isRequired,
   };
   componentDidMount() {
-    if (this.props.newsById) {
+    if (
+      this.props.newsById ||
+      this.props.newsById._id !== this.props.match.params.id
+    ) {
       console.log(this.props);
       this.props.getNewsById(this.props.match.params.id);
     }

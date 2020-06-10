@@ -39,7 +39,7 @@ class Categories extends Component {
                 <td>{cat.name}</td>
                 <td>
                   <Link
-                    to={`/editCategory/${cat.id}`}
+                    to={`/editCategory/${cat._id}`}
                     className={"btn btn-primary"}
                   >
                     Edit
