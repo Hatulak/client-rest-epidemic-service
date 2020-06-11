@@ -13,6 +13,8 @@ import {
   ADD_COMMENT_ERROR,
   GET_COMMENTS,
   GET_COMMENTS_ERROR,
+  DELETE_COMMENT,
+  DELETE_COMMENT_ERROR,
 } from "../actions/news_types";
 
 const initialState = {
@@ -86,7 +88,8 @@ export default function (state = initialState, action) {
     case ADD_COMMENT:
       return {
         ...state,
-        // todo finish it
+        comments: [],
+        comment: {},
       };
     case GET_COMMENTS:
       return{
@@ -98,6 +101,15 @@ export default function (state = initialState, action) {
           ...state,
           comments: [],
         };
+      case DELETE_COMMENT:
+        return{
+          ...state,
+          comments: [],
+        };
+      case DELETE_COMMENT_ERROR:
+        return{
+          ...state,
+        }
     default:
       return state;
   }

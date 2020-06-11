@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { getNewsById, addComment, getCommentsByNewsId } from "../actions/news";
+import { getNewsById, addComment, getCommentsByNewsId, deleteComment } from "../actions/news";
 import { Link } from "react-router-dom";
 import moment from "moment";
 
@@ -12,6 +12,7 @@ class NewsDetails extends Component {
     getCommentsByNewsId: PropTypes.func.isRequired,
     getNewsById: PropTypes.func.isRequired,
     comments: PropTypes.array.isRequired,
+    deleteComment: PropTypes.func.isRequired,
   };
 
   state = {
@@ -53,13 +54,14 @@ class NewsDetails extends Component {
           <hr className="my-4" />
           <form onSubmit={this.onSubmit}>
             <div className="form-group">
-              <input
-                type="text"
+              <textarea
                 className="form-control"
-                name="comment"
+                rows="3"
                 onChange={this.onChange}
+                name="comment"
                 value={comment}
-              />
+                placeholder={"Put your comment here"}
+              ></textarea>
             </div>
             <div className="form-group">
               <button type="submit" className="btn btn-primary">
@@ -72,9 +74,27 @@ class NewsDetails extends Component {
     );
   }
 
+  renderDeleteButton(_comment) { //todo - wyświetlać w zależności od roli, właściciela
+    return (
+      <div>
+        <button
+          type="button"
+          className="close"
+          data-dismiss="modal"
+          aria-label="close"
+          onClick={this.props.deleteComment.bind(this,_comment)}
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    );
+  }
+
   render() {
     const { comment } = this.state;
-
+    if (this.props.comments && this.props.comments.length == 0) {
+      this.props.getCommentsByNewsId(this.props.newsById._id);
+    }
     return (
       <div className="jumbotron">
         <h1>{this.props.newsById.title}</h1>
@@ -97,7 +117,10 @@ class NewsDetails extends Component {
               <div class="page-header">
                 <div class="float-left">{_comment.author}</div>
                 <div class="float-right">
-                  <small class="text-right">{moment(_comment.date).format("DD-MM-yyyy")}</small>
+                  <small class="text-right">
+                    {moment(_comment.date).format("DD-MM-yyyy hh:mm:ss")}
+                  </small>
+                  {this.renderDeleteButton(_comment)}
                 </div>
                 <div class="clearfix"></div>
               </div>
@@ -120,4 +143,5 @@ export default connect(mapStateToProps, {
   getNewsById,
   addComment,
   getCommentsByNewsId,
+  deleteComment,
 })(NewsDetails);

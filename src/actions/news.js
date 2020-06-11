@@ -14,6 +14,8 @@ import {
   ADD_COMMENT_ERROR,
   GET_COMMENTS,
   GET_COMMENTS_ERROR,
+  DELETE_COMMENT,
+  DELETE_COMMENT_ERROR,
 } from "./news_types";
 import { AUTH_ERROR } from "./auth_types";
 import { GET_ERRORS } from "./message_types";
@@ -220,6 +222,25 @@ export const addComment = (state, newsId) => (dispatch, getState) => {
       });
     });
 };
+
+export const deleteComment = (_comment) => (dispatch, getState) => {
+  console.log(_comment);
+  axios
+    .delete(`${baseURL}/comments/${_comment._id}`, tokenConfig(getState))
+    .then((res) => {
+      dispatch({
+        type: DELETE_COMMENT,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      dispatch({
+        type: DELETE_COMMENT_ERROR,
+      });
+    });
+};
+
 export const getCommentsByNewsId = ( newsId) => (dispatch, getState) => {
   axios
     .get(`${baseURL}/comments?newsId=${newsId}`, tokenConfig(getState))
