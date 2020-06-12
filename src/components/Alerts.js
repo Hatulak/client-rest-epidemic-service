@@ -10,7 +10,6 @@ class Alerts extends Component {
 
   componentDidUpdate(prevProps) {
     const { alert, message } = this.props;
-    console.log("jestem ", message);
     if (message !== prevProps.message) {
       // for message
       if (message.msg.passwordNotMatch)

@@ -9,7 +9,6 @@ export default function (state = initialState, action) {
     case CREATE_MESSAGES:
       return (state = action.payload);
     case GET_ERRORS:
-        console.log(action.payload);
       return {
         msg: action.payload.msg
       };

@@ -39,7 +39,7 @@ export const createCategory = (name) => (dispatch, getState) => {
       });
     })
     .catch((err) => {
-      console.log(err);
+      // console.log(err);
       dispatch({
         type: CATEGORY_CREATION_FAIL,
       });
@@ -58,7 +58,7 @@ export const editCategory = (state) => (dispatch, getState) => {
       });
     })
     .catch((err) => {
-      console.log(err);
+      // console.log(err);
       dispatch({
         type: CATEGORY_EDITED_FAIL,
       });
@@ -75,7 +75,7 @@ export const getCategories = () => (dispatch, getState) => {
       });
     })
     .catch((err) => {
-      console.log(err);
+      // console.log(err);
       dispatch({
         type: GET_CATEGORIES_FAIL,
       });
@@ -92,7 +92,7 @@ export const getCategoryById = (categoryId) => (dispatch, getState) => {
       });
     })
     .catch((err) => {
-      console.log(err);
+      // console.log(err);
       dispatch({
         type: GET_CATEGORY_FAIL,
       });
@@ -108,7 +108,7 @@ export const deleteCategoryById = (categoryId) => (dispatch, getState) => {
       });
     })
     .catch((err) => {
-      console.log(err);
+      // console.log(err);
       dispatch({
         type: DELETE_CATEGORY_ERROR,
       });

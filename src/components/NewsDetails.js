@@ -30,7 +30,6 @@ class NewsDetails extends Component {
       this.props.newsById ||
       this.props.newsById._id !== this.props.match.params.id
     ) {
-      console.log(this.props);
       this.props.getNewsById(this.props.match.params.id);
       this.props.getCommentsByNewsId(this.props.match.params.id);
     }

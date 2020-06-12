@@ -34,7 +34,7 @@ export const getUsers = () => (dispatch, getState) => {
       });
     })
     .catch((err) => {
-      console.log(err);
+      // console.log(err);
       dispatch({
         type: GET_USERS_ERROR,
       });
@@ -51,7 +51,7 @@ export const deleteUserById = (userId) => (dispatch, getState) => {
       });
     })
     .catch((err) => {
-      console.log(err);
+      // console.log(err);
       dispatch({
         type: DELETE_USER_ERROR,
       });
@@ -69,7 +69,7 @@ export const setUserRole = (user) => (dispatch, getState) => {
       });
     })
     .catch((err) => {
-      console.log(err);
+      // console.log(err);
       dispatch({
         type: SET_USER_ROLE_ERROR,
       });

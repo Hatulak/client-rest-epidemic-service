@@ -41,7 +41,6 @@ export default function (state = initialState, action) {
             redirect:true
         }
     case LOGIN_SUCCESS:
-        console.log(action.payload)
       return {
         ...state,
         ...action.payload,

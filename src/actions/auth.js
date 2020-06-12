@@ -38,7 +38,7 @@ export const loadUser = () => (dispatch, getState) => {
       });
     })
     .catch((err) => {
-      console.log(err);
+      // console.log(err);
       dispatch({
         type: AUTH_ERROR,
       });
@@ -69,7 +69,7 @@ export const login = (username, password) => (dispatch) => {
       localStorage.setItem("token", res.data.token);
     })
     .catch((err) => {
-      console.log(err);
+      // console.log(err);
       dispatch({
         type: LOGIN_FAIL,
       });
@@ -109,7 +109,6 @@ export const checkAuthority = () => {
 };
 
 export const setRedirectToFalse = () =>  (dispatch) => {
-  console.log("asdads")
   dispatch({
     type: AFTER_REGISTRATION,
   });

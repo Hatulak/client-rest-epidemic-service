@@ -45,7 +45,7 @@ export const getNews = () => (dispatch, getState) => {
       });
     })
     .catch((err) => {
-      console.log(err);
+      // console.log(err);
       dispatch({
         type: AUTH_ERROR,
       });
@@ -62,7 +62,7 @@ export const getNewsById = (newsId) => (dispatch, getState) => {
       });
     })
     .catch((err) => {
-      console.log(err);
+      // console.log(err);
       dispatch({
         type: AUTH_ERROR,
       });
@@ -99,7 +99,7 @@ export const createNews = (state) => (dispatch, getState) => {
             });
           })
           .catch((err) => {
-            console.log(err);
+            // console.log(err);
             dispatch({
               type: CREATE_NEWS_ERROR,
             });
@@ -115,7 +115,7 @@ export const createNews = (state) => (dispatch, getState) => {
       }
     })
     .catch((err) => {
-      console.log(err.response);
+      // console.log(err.response);
       dispatch({
         type: CREATE_NEWS_ERROR,
       });
@@ -134,7 +134,7 @@ export const editNews = (state) => (dispatch, getState) => {
   axios
     .put(`${baseURL}/news`, body, tokenConfig(getState))
     .then((res) => {
-      console.log(file);
+      // console.log(file);
       if (file !== "") {
         const token = getState().auth.token;
 
@@ -159,7 +159,7 @@ export const editNews = (state) => (dispatch, getState) => {
             });
           })
           .catch((err) => {
-            console.log(err);
+            // console.log(err);
             dispatch({
               type: EDIT_NEWS_ERROR,
             });
@@ -175,7 +175,7 @@ export const editNews = (state) => (dispatch, getState) => {
       }
     })
     .catch((err) => {
-      console.log(err.response);
+      // console.log(err.response);
       dispatch({
         type: EDIT_NEWS_ERROR,
       });
@@ -198,7 +198,7 @@ export const deleteNewsById = (newsId) => (dispatch, getState) => {
       });
     })
     .catch((err) => {
-      console.log(err);
+      // console.log(err);
       dispatch({
         type: DELETE_NEWS_ERROR,
       });
@@ -216,7 +216,7 @@ export const addComment = (state, newsId) => (dispatch, getState) => {
       });
     })
     .catch((err) => {
-      console.log(err);
+      // console.log(err);
       dispatch({
         type: ADD_COMMENT_ERROR,
       });
@@ -224,7 +224,6 @@ export const addComment = (state, newsId) => (dispatch, getState) => {
 };
 
 export const deleteComment = (_comment) => (dispatch, getState) => {
-  console.log(_comment);
   axios
     .delete(`${baseURL}/comments/${_comment._id}`, tokenConfig(getState))
     .then((res) => {
@@ -234,7 +233,7 @@ export const deleteComment = (_comment) => (dispatch, getState) => {
       });
     })
     .catch((err) => {
-      console.log(err);
+      // console.log(err);
       dispatch({
         type: DELETE_COMMENT_ERROR,
       });
@@ -251,7 +250,7 @@ export const getCommentsByNewsId = ( newsId) => (dispatch, getState) => {
       });
     })
     .catch((err) => {
-      console.log(err);
+      // console.log(err);
       dispatch({
         type: GET_COMMENTS_ERROR,
       });

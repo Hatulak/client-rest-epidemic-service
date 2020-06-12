@@ -17,12 +17,10 @@ class News extends Component {
   componentDidMount() {
     if (this.props.news) {
       this.props.getNews();
-      console.log(this.props.news);
     }
   }
 
   renderButton() {
-    console.log(this.props.user);
     if (this.props.user !== null)
       if (
         this.props.user.role.includes("ADMIN") ||

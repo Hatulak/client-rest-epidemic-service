@@ -25,7 +25,7 @@ class Categories extends Component {
     }
     if (this.props.categories) {
       this.props.getCategories();
-      console.log(this.props.categories);
+  
     }
   }
 
