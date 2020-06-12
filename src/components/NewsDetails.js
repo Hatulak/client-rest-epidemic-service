@@ -48,9 +48,9 @@ class NewsDetails extends Component {
 
   renderCommentForm(comment) {
     return (
-      <div class="card">
-        <div class="card-body">
-          <h4 class="card-title">Add Comment</h4>
+      <div className="card">
+        <div className="card-body">
+          <h4 className="card-title">Add Comment</h4>
           <hr className="my-4" />
           <form onSubmit={this.onSubmit}>
             <div className="form-group">
@@ -74,20 +74,27 @@ class NewsDetails extends Component {
     );
   }
 
-  renderDeleteButton(_comment) { //todo - wyświetlać w zależności od roli, właściciela
-    return (
-      <div>
-        <button
-          type="button"
-          className="close"
-          data-dismiss="modal"
-          aria-label="close"
-          onClick={this.props.deleteComment.bind(this,_comment)}
-        >
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-    );
+  renderDeleteButton(_comment) {
+    if (this.props.user !== null) {
+      if (
+        this.props.user.role.includes("ADMIN") ||
+        this.props.user.role.includes("EDITOR")
+      ) {
+        return (
+            <div>
+              <button
+                type="button"
+                className="close"
+                data-dismiss="modal"
+                aria-label="close"
+                onClick={this.props.deleteComment.bind(this,_comment)}
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+        );
+      }
+    }
   }
 
   render() {
@@ -112,17 +119,17 @@ class NewsDetails extends Component {
         <hr className="my-4" />
 
         {this.props.comments.map((_comment) => (
-          <div className="card border-primary mb-3">
+          <div className="card border-primary mb-3" key={_comment._id}>
             <div className="card-header">
-              <div class="page-header">
-                <div class="float-left">{_comment.author}</div>
-                <div class="float-right">
-                  <small class="text-right">
+              <div className="page-header">
+                <div className="float-left">{_comment.author}</div>
+                <div className="float-right">
+                  <small className="text-right">
                     {moment(_comment.date).format("DD-MM-yyyy hh:mm:ss")}
                   </small>
                   {this.renderDeleteButton(_comment)}
                 </div>
-                <div class="clearfix"></div>
+                <div className="clearfix"></div>
               </div>
             </div>
             <div className="card-body">
@@ -138,6 +145,8 @@ class NewsDetails extends Component {
 const mapStateToProps = (state) => ({
   newsById: state.news.newsById,
   comments: state.news.comments,
+  user: state.auth.user,
+  auth: state.auth,
 });
 export default connect(mapStateToProps, {
   getNewsById,
