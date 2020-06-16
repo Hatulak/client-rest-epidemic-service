@@ -1,7 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { getNews, getNewsById, deleteNewsById } from "../actions/news";
+import {
+  getNews,
+  getNewsById,
+  deleteNewsById,
+  getNewsPublished,
+} from "../actions/news";
 import { Link } from "react-router-dom";
 import moment from "moment";
 
@@ -10,13 +15,22 @@ class News extends Component {
     news: PropTypes.array.isRequired,
     getNews: PropTypes.func.isRequired,
     deleteNewsById: PropTypes.func.isRequired,
+    getNewsPublished: PropTypes.func.isRequired,
     getNewsById: PropTypes.func.isRequired,
     user: PropTypes.object.isRequired,
     auth: PropTypes.object.isRequired,
   };
   componentDidMount() {
     if (this.props.news) {
-      this.props.getNews();
+      if (this.props.user !== null)
+        if (
+          this.props.user.role.includes("ADMIN") ||
+          this.props.user.role.includes("EDITOR")
+        ) {
+          this.props.getNews();
+        } else {
+          this.props.getNewsPublished();
+        }
     }
   }
 
@@ -120,4 +134,5 @@ export default connect(mapStateToProps, {
   getNews,
   getNewsById,
   deleteNewsById,
+  getNewsPublished,
 })(News);

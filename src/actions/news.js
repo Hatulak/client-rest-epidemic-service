@@ -34,10 +34,26 @@ axios.interceptors.response.use(
 
 const baseURL = "http://localhost:3000";
 
-// CHECK TOKEN & LOAD USER
 export const getNews = () => (dispatch, getState) => {
   axios
     .get(`${baseURL}/news`, tokenConfig(getState))
+    .then((res) => {
+      dispatch({
+        type: GET_NEWS,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      // console.log(err);
+      dispatch({
+        type: AUTH_ERROR,
+      });
+    });
+};
+
+export const getNewsPublished = () => (dispatch, getState) => {
+  axios
+    .get(`${baseURL}/news?status=PUBLISHED`, tokenConfig(getState))
     .then((res) => {
       dispatch({
         type: GET_NEWS,
@@ -240,7 +256,7 @@ export const deleteComment = (_comment) => (dispatch, getState) => {
     });
 };
 
-export const getCommentsByNewsId = ( newsId) => (dispatch, getState) => {
+export const getCommentsByNewsId = (newsId) => (dispatch, getState) => {
   axios
     .get(`${baseURL}/comments?newsId=${newsId}`, tokenConfig(getState))
     .then((res) => {
@@ -256,8 +272,6 @@ export const getCommentsByNewsId = ( newsId) => (dispatch, getState) => {
       });
     });
 };
-
-
 
 export const setRedirectAfterCreationToFalse = () => (dispatch) => {
   dispatch({
