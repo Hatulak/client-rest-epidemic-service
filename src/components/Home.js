@@ -6,7 +6,7 @@ export default function Home() {
       <div className="card-body">
         <h2 className="card-title">Welcome!</h2>
         <p className="card-text homeCardText">
-          Good news about corona virus and other diseases!
+          Good news about coronavirus and other diseases!
         </p>
       </div>
     </div>

@@ -9,6 +9,7 @@ import {
   DELETE_NEWS,
   DELETE_NEWS_ERROR,
   EDITED_NEWS,
+  EDITED_NEWS_REDIRECTED,
   EDIT_NEWS_ERROR,
   ADD_COMMENT,
   ADD_COMMENT_ERROR,
@@ -16,6 +17,9 @@ import {
   GET_COMMENTS_ERROR,
   DELETE_COMMENT,
   DELETE_COMMENT_ERROR,
+  PUBLISH,
+  PUBLISH_REDIRECTED,
+  PUBLISH_ERROR,
 } from "./news_types";
 import { AUTH_ERROR } from "./auth_types";
 import { GET_ERRORS } from "./message_types";
@@ -273,8 +277,36 @@ export const getCommentsByNewsId = (newsId) => (dispatch, getState) => {
     });
 };
 
+export const publishNewsById = (newsId) => (dispatch, getState) => {
+  const body = JSON.stringify({ status: "PUBLISHED" });
+  axios
+    .patch(`${baseURL}/news/${newsId}/status`, body, tokenConfig(getState))
+    .then((res) => {
+      dispatch({
+        type: PUBLISH,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      // console.log(err);
+      dispatch({
+        type: PUBLISH_ERROR,
+      });
+    });
+};
+
 export const setRedirectAfterCreationToFalse = () => (dispatch) => {
   dispatch({
     type: CREATED_NEWS_REDIRECTED,
+  });
+};
+export const setRedirectAfterStatusChangeToFalse = () => (dispatch) => {
+  dispatch({
+    type: PUBLISH_REDIRECTED,
+  });
+};
+export const setRedirectAfterEditionToFalse = () => (dispatch) => {
+  dispatch({
+    type: EDITED_NEWS_REDIRECTED,
   });
 };

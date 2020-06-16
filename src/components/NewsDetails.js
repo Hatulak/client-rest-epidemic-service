@@ -1,7 +1,7 @@
-import React, { Component } from "react";
+import React, { Component, Redirect } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { getNewsById, addComment, getCommentsByNewsId, deleteComment } from "../actions/news";
+import { getNewsById, addComment, getCommentsByNewsId, deleteComment, publishNewsById, setRedirectAfterStatusChangeToFalse } from "../actions/news";
 import { Link } from "react-router-dom";
 import moment from "moment";
 
@@ -10,9 +10,11 @@ class NewsDetails extends Component {
     newsById: PropTypes.object.isRequired,
     addComment: PropTypes.func.isRequired,
     getCommentsByNewsId: PropTypes.func.isRequired,
+    setRedirectAfterStatusChangeToFalse: PropTypes.func.isRequired,
     getNewsById: PropTypes.func.isRequired,
     comments: PropTypes.array.isRequired,
     deleteComment: PropTypes.func.isRequired,
+    redirectAfterStatusChange: PropTypes.bool.isRequired,
   };
 
   state = {
@@ -96,13 +98,39 @@ class NewsDetails extends Component {
     }
   }
 
+  renderPublishButton(news) {
+    if (this.props.user !== null) {
+      if (
+        this.props.user.role.includes("ADMIN") ||
+        this.props.user.role.includes("EDITOR")
+      ) {
+        console.log(news);
+        if (news.status !== "PUBLISHED") {
+          return (
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={this.props.publishNewsById.bind(this, news._id)}
+            >
+              Publish
+            </button>
+          );
+        }
+      }
+    }
+  }
+
   render() {
+    if (this.props.redirectAfterStatusChange) {
+      return <Redirect to="/news" />;
+    }
     const { comment } = this.state;
     if (this.props.comments && this.props.comments.length == 0) {
       this.props.getCommentsByNewsId(this.props.newsById._id);
     }
     return (
       <div className="jumbotron">
+        {this.renderPublishButton(this.props.newsById)}
         <h1>{this.props.newsById.title}</h1>
         <p className="lead">
           Autor: {this.props.newsById.author}, dnia{" "}
@@ -144,6 +172,7 @@ class NewsDetails extends Component {
 const mapStateToProps = (state) => ({
   newsById: state.news.newsById,
   comments: state.news.comments,
+  redirectAfterStatusChange: state.news.redirectAfterStatusChange,
   user: state.auth.user,
   auth: state.auth,
 });
@@ -152,4 +181,6 @@ export default connect(mapStateToProps, {
   addComment,
   getCommentsByNewsId,
   deleteComment,
+  publishNewsById,
+  setRedirectAfterStatusChangeToFalse,
 })(NewsDetails);

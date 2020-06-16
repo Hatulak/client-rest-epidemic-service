@@ -15,6 +15,9 @@ import {
   GET_COMMENTS_ERROR,
   DELETE_COMMENT,
   DELETE_COMMENT_ERROR,
+  PUBLISH,
+  PUBLISH_REDIRECTED,
+  PUBLISH_ERROR,
 } from "../actions/news_types";
 
 const initialState = {
@@ -22,6 +25,7 @@ const initialState = {
   newsById: {},
   redirectAfterCreation: false,
   redirectAfterEdition: false,
+  redirectAfterStatusChange: false,
   comments: [],
 };
 
@@ -92,24 +96,39 @@ export default function (state = initialState, action) {
         comment: {},
       };
     case GET_COMMENTS:
-      return{
+      return {
         ...state,
         comments: action.payload,
       };
-      case GET_COMMENTS_ERROR:
-        return{
+    case GET_COMMENTS_ERROR:
+      return {
+        ...state,
+        comments: [],
+      };
+    case DELETE_COMMENT:
+      return {
+        ...state,
+        comments: [],
+      };
+    case DELETE_COMMENT_ERROR:
+      return {
+        ...state,
+      };
+    case PUBLISH:
+      return {
+        ...state,
+        news: [],
+        redirectAfterStatusChange: true,
+      };
+      case PUBLISH_REDIRECTED:
+        return {
           ...state,
-          comments: [],
+          redirectAfterStatusChange: false,
         };
-      case DELETE_COMMENT:
-        return{
-          ...state,
-          comments: [],
-        };
-      case DELETE_COMMENT_ERROR:
-        return{
-          ...state,
-        }
+    case PUBLISH_ERROR:
+      return {
+        ...state,
+      };
     default:
       return state;
   }

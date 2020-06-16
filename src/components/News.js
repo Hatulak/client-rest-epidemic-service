@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, PureComponent } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import {
@@ -6,6 +6,10 @@ import {
   getNewsById,
   deleteNewsById,
   getNewsPublished,
+  publishNewsById,
+  setRedirectAfterEditionToFalse,
+  setRedirectAfterCreationToFalse,
+  setRedirectAfterStatusChangeToFalse,
 } from "../actions/news";
 import { Link } from "react-router-dom";
 import moment from "moment";
@@ -17,10 +21,26 @@ class News extends Component {
     deleteNewsById: PropTypes.func.isRequired,
     getNewsPublished: PropTypes.func.isRequired,
     getNewsById: PropTypes.func.isRequired,
+    publishNewsById: PropTypes.func.isRequired,
+    setRedirectAfterCreationToFalse: PropTypes.func.isRequired,
+    setRedirectAfterStatusChangeToFalse: PropTypes.func.isRequired,
+    setRedirectAfterEditionToFalse: PropTypes.func.isRequired,
+    redirectAfterCreation: PropTypes.bool.isRequired,
+    redirectAfterEdition: PropTypes.bool.isRequired,
+    redirectAfterStatusChange: PropTypes.bool.isRequired,
     user: PropTypes.object.isRequired,
     auth: PropTypes.object.isRequired,
   };
   componentDidMount() {
+    if(this.props.redirectAfterCreation){
+      this.props.setRedirectAfterCreationToFalse();
+    }
+    if(this.props.redirectAfterEdition){
+      this.props.setRedirectAfterEditionToFalse();
+    }
+    if(this.props.redirectAfterStatusChange){
+      this.props.setRedirectAfterStatusChangeToFalse();
+    }
     if (this.props.news) {
       if (this.props.user !== null)
         if (
@@ -126,6 +146,9 @@ class News extends Component {
 }
 
 const mapStateToProps = (state) => ({
+  redirectAfterCreation: state.news.redirectAfterCreation,
+  redirectAfterEdition: state.news.redirectAfterEdition,
+  redirectAfterStatusChange: state.news.redirectAfterStatusChange,
   news: state.news.news,
   user: state.auth.user,
   auth: state.auth,
@@ -135,4 +158,8 @@ export default connect(mapStateToProps, {
   getNewsById,
   deleteNewsById,
   getNewsPublished,
+  publishNewsById,
+  setRedirectAfterStatusChangeToFalse,
+  setRedirectAfterCreationToFalse,
+  setRedirectAfterEditionToFalse,
 })(News);
