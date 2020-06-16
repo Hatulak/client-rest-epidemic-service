@@ -2,12 +2,14 @@ import React, { Component } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { createNews, setRedirectAfterCreationToFalse, getNewsById, editNews } from "../actions/news";
+import { createNews, setRedirectAfterEditionToFalse, getNewsById, editNews } from "../actions/news";
 import { getCategories } from "../actions/category";
 
 class CreateNews extends Component {
   static propTypes = {
     getCategories: PropTypes.func.isRequired,
+    setRedirectAfterEditionToFalse: PropTypes.func.isRequired,
+    redirectAfterEdition: PropTypes.bool.isRequired,
     getNewsById: PropTypes.func.isRequired,
     editNews: PropTypes.func.isRequired,
     categories: PropTypes.array.isRequired,
@@ -53,6 +55,9 @@ class CreateNews extends Component {
   onChange = (e) => this.setState({ [e.target.name]: e.target.value });
 
   render() {
+    if (this.props.redirectAfterEdition) {
+      return <Redirect to="/news" />;
+    }
     const { title, description, cconst, file, inputRef } = this.state;
     return (
       <div className="col-md-6 m-auto">
@@ -116,6 +121,7 @@ class CreateNews extends Component {
 }
 
 const mapStateToProps = (state) => ({
+  redirectAfterEdition: state.news.redirectAfterEdition,
   categories: state.category.categories,
   newsById: state.news.newsById,
 });

@@ -1,8 +1,8 @@
-import React, { Component, Redirect } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { getNewsById, addComment, getCommentsByNewsId, deleteComment, publishNewsById, setRedirectAfterStatusChangeToFalse } from "../actions/news";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import moment from "moment";
 
 class NewsDetails extends Component {
@@ -104,7 +104,7 @@ class NewsDetails extends Component {
         this.props.user.role.includes("ADMIN") ||
         this.props.user.role.includes("EDITOR")
       ) {
-        console.log(news);
+        // console.log(news);
         if (news.status !== "PUBLISHED") {
           return (
             <button
